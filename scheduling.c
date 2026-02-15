@@ -2,13 +2,12 @@
 
 #define MAX 10  // Maximum size of the ready queue
 
-// Process structure
 typedef struct {
-    int pid;          // Process ID
-    int burst;        // CPU burst time
-    int remaining;    // Remaining time (for RR)
-    int waiting;      // Waiting time
-    int turnaround;   // Turnaround time
+    int pid;          
+    int burst;        
+    int remaining;    
+    int waiting;      
+    int turnaround;   
 } Process;
 
 /* ---------- SJF (Non-preemptive) ---------- */
@@ -16,7 +15,6 @@ void sjf(Process p[], int n) {
     int total_wait = 0, total_turn = 0;
     Process temp;
 
-    // Sort processes by burst time (ascending)
     for (int i = 0; i < n - 1; i++) {
         for (int j = i + 1; j < n; j++) {
             if (p[i].burst > p[j].burst) {
@@ -40,7 +38,6 @@ void sjf(Process p[], int n) {
         total_turn += p[i].turnaround;
     }
 
-    // Print results
     printf("\n--- SJF Scheduling (Non-preemptive) ---\n");
     printf("PID\tBurst\tWaiting\tTurnaround\n");
     for (int i = 0; i < n; i++) {
@@ -57,7 +54,6 @@ void roundRobin(Process p[], int n, int quantum) {
     int remaining_processes = n;
     int context_switches = 0;
 
-    // Initialize remaining times
     for (int i = 0; i < n; i++) {
         p[i].remaining = p[i].burst;
         p[i].waiting = 0;
@@ -86,7 +82,7 @@ void roundRobin(Process p[], int n, int quantum) {
 
                 // Re-enqueue only if space available
                 int next_rear = (rear + 1) % MAX;
-                if (next_rear != front) {  // space available
+                if (next_rear != front) { 
                     queue[rear] = idx;
                     rear = next_rear;
                 } else {
@@ -110,7 +106,6 @@ void roundRobin(Process p[], int n, int quantum) {
         total_turn += p[i].turnaround;
     }
 
-    // Print results
     printf("\n--- Round Robin Scheduling (Preemptive) ---\n");
     printf("PID\tBurst\tWaiting\tTurnaround\n");
     for (int i = 0; i < n; i++) {
@@ -122,15 +117,14 @@ void roundRobin(Process p[], int n, int quantum) {
     printf("Context Switches (CPU Utilisation Indicator): %d\n", context_switches);
 }
 
-/* ---------- MAIN ---------- */
 int main() {
-    Process p1[] = {{1, 6}, {2, 8}, {3, 7}, {4, 3}};  // For SJF
-    Process p2[] = {{1, 6}, {2, 8}, {3, 7}, {4, 3}};  // For RR
+    Process p1[] = {{1, 6}, {2, 8}, {3, 7}, {4, 3}};  
+    Process p2[] = {{1, 6}, {2, 8}, {3, 7}, {4, 3}};  
     int n = 4;
     int quantum = 3;
 
-    sjf(p1, n);                 // Run SJF
-    roundRobin(p2, n, quantum); // Run Round Robin
+    sjf(p1, n);                 
+    roundRobin(p2, n, quantum); 
 
     return 0;
 }
